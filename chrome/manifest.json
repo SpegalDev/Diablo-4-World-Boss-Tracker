@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Diablo 4 World Boss Tracker",
+  "short_name": "D4 World Bosses",
+  "version": "1.0",
+  "description": "Stay on top of Diablo 4's World Bosses with details, countdown timers, and notifications for upcoming spawns!",
+  "icons": {
+    "128": "icons/icon.png"
+  },
+  "author": "ryan@spegal.dev",
+  "homepage_url": "https://worldstone.io/extension,",
+  "action": {
+    "default_title": "Diablo 4 World Boss Tracker",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "notifications",
+    "storage"
+  ]
+}

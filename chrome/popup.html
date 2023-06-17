@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Open Sans', sans-serif;
+			line-height: 1.75em;
+			font-size: 16px;
+			background-color: #222;
+			color: #aaa;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			min-width: 300px;
+		}
+
+		img {
+			height: 1.5rem;
+			vertical-align: top;
+		}
+
+		a[href] {
+			color: #1e8ad6;
+		}
+
+		a[href]:hover {
+			color: #3ba0e6;
+		}
+
+		hr {
+			height: 1px;
+			background-color: #CCCCCC;
+			border: none;
+			width: 100%;
+			margin: 10px;
+		}
+
+		label {
+			display: block;
+			margin: 5px 0;
+		}
+
+		select {
+			margin-left: 5px;
+		}
+	</style>
+</head>
+
+<body>
+	<p>
+		<img src="icons/icon.png" id="bossImage" />
+		<a href="https://worldstone.io/d4/world-bosses" target="_blank" id="bossLink"><b id="bossName"></b></a> in <span id="bossTime"></span> minute<span id="bossTimeS"></span>.
+	</p>
+	<hr>
+	<label for="badgeCheckbox">
+		<input type="checkbox" id="badgeCheckbox" name="badgeCheckbox">
+		Disable Time Remaining?
+	</label>
+	<label for="badgeColor">
+		Time Remaining Color:
+		<input type="color" id="badgeColor" name="badgeColor">
+	</label>
+	<label>
+		<input type="checkbox" id="notificationsCheckbox">
+		Enable Browser Notifications?
+	</label>
+	<label for="notificationTime">
+		Notification Time:
+		<select id="notificationTime">
+			<option value="1">1 Min</option>
+			<option value="2">2 Mins</option>
+			<option value="3">3 Mins</option>
+			<option value="4">4 Mins</option>
+			<option value="5">5 Mins</option>
+			<option value="6">6 Mins</option>
+			<option value="7">7 Mins</option>
+			<option value="8">8 Mins</option>
+			<option value="9">9 Mins</option>
+			<option value="10">10 Mins</option>
+			<option value="11">11 Mins</option>
+			<option value="12">12 Mins</option>
+			<option value="13">13 Mins</option>
+			<option value="14">14 Mins</option>
+			<option value="15">15 Mins</option>
+			<option value="16">16 Mins</option>
+			<option value="17">17 Mins</option>
+			<option value="18">18 Mins</option>
+			<option value="19">19 Mins</option>
+			<option value="20">20 Mins</option>
+		</select>
+		Prior
+	</label>
+	<hr>
+	<footer>
+		<small>Enjoy? Consider <a href="https://out.spegal.dev/coffee-chrome" target="_blank" rel="nofollow">buying me a coffee</a> &#9749;</small>
+	</footer>
+	<script src="popup.js"></script>
+</body>
+
+</html>

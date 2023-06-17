@@ -3,7 +3,7 @@ A Chrome + Firefox extension to track and notify you when the next world boss is
 
 * [Install on Chrome](#)
 
-* [Install on Firefox](#)
+* [Install on Firefox](https://addons.mozilla.org/en-US/firefox/addon/diablo-4-world-boss-tracker/)
 
 Stay on top of Diablo 4's World Bosses with details, countdown timers, and notifications for upcoming spawns!
 

@@ -7,7 +7,7 @@ A Chrome + Firefox extension to track and notify you when the next world boss is
 
 Stay on top of Diablo 4's World Bosses with details, countdown timers, and notifications for upcoming spawns!
 
-Introducing "Diablo 4 World Boss Tracker" - Your Ultimate Diablo 4 Chrome Extension
+Introducing "Diablo 4 World Boss Tracker" - Your Ultimate Diablo 4 Browser Extension
 
 Never miss out on another world boss spawn in Diablo IV! The "Diablo 4 World Boss Tracker" is your go-to companion, providing you with real-time information on upcoming bosses, countdown timers, and convenient notifications to ensure you never let a spawn slip away.
 

@@ -2,8 +2,15 @@ document.addEventListener('DOMContentLoaded', function () {
     popupInit();
 
     async function popupInit() {
+        Coloris({ el: '.coloris' });
+        Coloris.setInstance('.instance3', {
+            theme: 'polaroid',
+            themeMode: 'dark',
+            alpha: false,
+        });
+
         const { notificationsEnabled, notificationTime, badgeColor, badgeDisabled, nextBossName, nextBossTime } 
-            = await chrome.storage.sync.get(['notificationsEnabled', 'notificationTime', 'badgeColor', 'badgeDisabled', 'nextBossName', 'nextBossTime']);
+            = await browser.storage.sync.get(['notificationsEnabled', 'notificationTime', 'badgeColor', 'badgeDisabled', 'nextBossName', 'nextBossTime']);
 
         setupNotifications(notificationsEnabled);
         setupNotificationTime(notificationTime);
@@ -16,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const notificationsCheckbox = document.getElementById('notificationsCheckbox');
         notificationsCheckbox.checked = enabled !== false;
         notificationsCheckbox.addEventListener('change', function () {
-            chrome.storage.sync.set({ notificationsEnabled: this.checked });
+            browser.storage.sync.set({ notificationsEnabled: this.checked });
         });
     }
 
@@ -24,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const notificationTimeElement = document.getElementById('notificationTime');
         notificationTimeElement.value = time || '10';
         notificationTimeElement.addEventListener('change', function() {
-            chrome.storage.sync.set({notificationTime: this.value});
+            browser.storage.sync.set({notificationTime: this.value});
         });
     }
 
@@ -32,8 +39,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const badgeCheckbox = document.getElementById('badgeCheckbox');
         badgeCheckbox.checked = enabled;
         badgeCheckbox.addEventListener('change', function () {
-            chrome.storage.sync.set({ badgeDisabled: this.checked }, function() {
-                chrome.runtime.sendMessage({ action: 'updateBadgeText' });
+            browser.storage.sync.set({ badgeDisabled: this.checked }, function() {
+                browser.runtime.sendMessage({ action: 'updateBadgeText' });
             });
         });
     }
@@ -42,19 +49,19 @@ document.addEventListener('DOMContentLoaded', function () {
         const badgeColorElement = document.getElementById('badgeColor');
         badgeColorElement.value = color || '#CCCCCC';
 
-        badgeColorElement.addEventListener('change', function() {
+        badgeColorElement.addEventListener('change', async function() {
             const newColor = this.value;
-            chrome.storage.sync.set({ badgeColor: newColor }, function() {
-                console.log('Badge color is set to ' + newColor);
-                chrome.action.setBadgeBackgroundColor({ color: newColor });
-            });
+            await browser.storage.sync.set({ badgeColor: newColor });
+            console.log('Badge color is set to ' + newColor);
+            browser.browserAction.setBadgeBackgroundColor({ color: newColor });
         });
 
-        chrome.storage.sync.get('badgeColor', function(result) {
+
+        browser.storage.sync.get('badgeColor', function(result) {
             const storedColor = result.badgeColor;
             if (storedColor) {
                 badgeColorElement.value = storedColor;
-                chrome.action.setBadgeBackgroundColor({ color: storedColor });
+                browser.browserAction.setBadgeBackgroundColor({ color: storedColor });
             }
         });
     }
@@ -82,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const details = EVENT_DETAILS[bossName] || EVENT_DETAILS.default;
         document.getElementById('bossLink').href = details.link;
         document.getElementById('bossImage').src = details.icon;
-        document.getElementById('bossName').textContent = bossName;
+        document.getElementById('bossName').textContent = bossName.replace("King Black Dragon", "KBD");
 
         const bossTimeElement = document.getElementById('bossTime');
         bossTimeElement.textContent = bossTime;

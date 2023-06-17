@@ -16,19 +16,19 @@ let nextBossName = null;
 let nextBossTime = null;
 let fetchTimer = null;
 
-chrome.runtime.onStartup.addListener(keepAlive);
+browser.runtime.onStartup.addListener(keepAlive);
 keepAlive();
 
-chrome.runtime.onMessage.addListener((message) => {
-  if (message.action === 'updateBadgeText') checkBossSpawn();
+browser.runtime.onMessage.addListener((message) => {
+  if (message.action === 'updateBadgeText') checkFlashBoss();
 });
 
 backgroundInit();
 
 async function backgroundInit() {
-  await chrome.action.setBadgeBackgroundColor({ color: '#CCCCCC' });
+  await browser.browserAction.setBadgeBackgroundColor({ color: '#CCCCCC' });
   await updateBadgeText('?');
-  checkBossSpawn();
+  checkFlashBoss();
 }
 
 async function fetchData(url) {
@@ -51,30 +51,30 @@ async function processBossData(data) {
   updateIcon(upcomingBossName);
   await handleNotification(remainingTime, upcomingBossName);
   TIMEOUT_TIME = remainingTime > 60 ? FIVE_MINUTES_MS : ONE_MINUTE_MS;
-  await chrome.storage.sync.set({ nextBossName, nextBossTime });
-  fetchTimer = setTimeout(checkBossSpawn, TIMEOUT_TIME);
+  await browser.storage.sync.set({ nextBossName, nextBossTime });
+  fetchTimer = setTimeout(checkFlashBoss, TIMEOUT_TIME);
 }
 
 async function updateBadgeText(remainingTime) {
-  const { badgeDisabled, badgeColor } = await chrome.storage.sync.get(['badgeDisabled', 'badgeColor']);
+  const { badgeDisabled, badgeColor } = await browser.storage.sync.get(['badgeDisabled', 'badgeColor']);
   if (!badgeDisabled) {
     const color = badgeColor || '#CCCCCC';
-    chrome.action.setBadgeBackgroundColor({ color });
+    browser.browserAction.setBadgeBackgroundColor({ color });
     let displayTime = `${remainingTime}m`;
     if (remainingTime > 60) displayTime = `${Math.floor(remainingTime / 60)}h`;
-    if (remainingTime <= 1) displayTime = 'NOW';
-    chrome.action.setBadgeText({ text: displayTime });
+    if (remainingTime <= 1) displayTime = 'RN';
+    browser.browserAction.setBadgeText({ text: displayTime });
   } else {
-    chrome.action.setBadgeText({ text: '' });
+    browser.browserAction.setBadgeText({ text: '' });
   }
 }
 
 function updateIcon(upcomingBossName) {
-  chrome.action.setIcon({ path: { "128": `${getIcon(upcomingBossName)}` } });
+  browser.browserAction.setIcon({ path: { "128": `${getIcon(upcomingBossName)}` } });
 }
 
 async function handleNotification(remainingTime, upcomingBossName) {
-  const { notificationsEnabled, notificationTime } = await chrome.storage.sync.get(['notificationsEnabled', 'notificationTime']);
+  const { notificationsEnabled, notificationTime } = await browser.storage.sync.get(['notificationsEnabled', 'notificationTime']);
   if (notificationsEnabled) {
     NOTIFICATION_THRESHOLD = notificationTime || NOTIFICATION_THRESHOLD;
     if (remainingTime <= NOTIFICATION_THRESHOLD && !isNotificationPlayed) {
@@ -98,19 +98,19 @@ function showNotification(upcomingBossName, upcomingBossTime) {
     title: 'Diablo IV World Boss',
     message: getNotificationMessage(upcomingBossName, upcomingBossTime),
   };
-  chrome.notifications.create(options);
+  browser.notifications.create("diabloBoss", options);
 }
 
 function getNotificationMessage(upcomingBossName, upcomingBossTime) {
   return upcomingBossName+' will be spawning in Sanctuary within the next '+upcomingBossTime+' minute'+(upcomingBossTime === 1 ? '' : 's')+'.';
 }
 
-function checkBossSpawn() {
+function checkFlashBoss() {
   fetchData(FETCH_URL)
     .then(data => processBossData(data))
     .catch(error => console.error('Error occurred while fetching data:', error));
 }
 
 function keepAlive() {
-  setInterval(chrome.runtime.getPlatformInfo, KEEP_ALIVE_INTERVAL);
+  setInterval(browser.runtime.getPlatformInfo, KEEP_ALIVE_INTERVAL);
 }

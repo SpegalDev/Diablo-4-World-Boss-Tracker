@@ -2,6 +2,7 @@ const KEEP_ALIVE_INTERVAL = 20e3;
 const FETCH_URL = 'https://api.worldstone.io/world-bosses/';
 const FIVE_MINUTES_MS = 300000;
 const ONE_MINUTE_MS = 60000;
+const WATCHDOG_INTERVAL = ONE_MINUTE_MS * 10;
 const EVENT_ICONS = {
   'Ashava': 'icons/ashava.png',
   'Avarice': 'icons/avarice.png',
@@ -15,20 +16,30 @@ let isNotificationPlayed = false;
 let nextBossName = null;
 let nextBossTime = null;
 let fetchTimer = null;
+let lastSuccessfulFetchTime = null;
 
 browser.runtime.onStartup.addListener(keepAlive);
 keepAlive();
+watchDog();
+backgroundInit();
 
 browser.runtime.onMessage.addListener((message) => {
   if (message.action === 'updateBadgeText') checkFlashBoss();
 });
 
-backgroundInit();
-
 async function backgroundInit() {
   await browser.browserAction.setBadgeBackgroundColor({ color: '#CCCCCC' });
   await updateBadgeText('?');
   checkFlashBoss();
+}
+
+function watchDog() {
+  setInterval(() => {
+    if (Date.now() - lastSuccessfulFetchTime > WATCHDOG_INTERVAL) {
+      console.warn('Fetch loop has stopped. Restarting...');
+      checkFlashBoss();
+    }
+  }, WATCHDOG_INTERVAL);
 }
 
 async function fetchData(url) {
@@ -44,6 +55,7 @@ async function fetchData(url) {
 
 async function processBossData(data) {
   clearTimeout(fetchTimer);
+  lastSuccessfulFetchTime = Date.now();
   const { time: remainingTime, name: upcomingBossName } = data;
   nextBossName = upcomingBossName;
   nextBossTime = remainingTime;

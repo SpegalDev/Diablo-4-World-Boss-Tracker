@@ -31,4 +31,6 @@ Level up your Diablo journey with the "Diablo 4 World Boss Tracker" browser exte
 
 -----
 
-If you find this exension useful, consider [buying me a coffee ☕](https://out.spegal.dev/coffee)
+If you find this exension useful, consider buying me a coffee or two.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://out.spegal.dev/coffee/github)
